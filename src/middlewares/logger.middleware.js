@@ -1,0 +1,23 @@
+import fs from "fs";
+import { loadavg } from "os";
+
+const fsPromise = fs.promises;
+
+async function log(logData){
+    try{
+        logData = `\n ${new Date().toString()} - ${logData}`;
+        await fsPromise.writeFile('log.txt',logData);
+    }catch(err){
+        console.log(err);
+    }
+}
+
+const loggerMiddleware = async (req, res, next) =>{
+    //1. Log Request Body.
+    if(!req.url.includes('signin')){
+    const logData=`${req.url} - ${JSON.stringify(req.body)}`;
+    await log(logData);}
+    next();
+};
+
+export default loggerMiddleware;

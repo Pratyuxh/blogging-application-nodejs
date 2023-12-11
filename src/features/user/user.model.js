@@ -46,5 +46,12 @@ let users = [
     email: 'customer@ecom.com',
     password: 'Password1',
     type: 'customer',
+  },
+  {
+    id: 3,
+    name: 'Guest User',
+    email: 'guest@ecom.com',
+    password: 'Password1',
+    type: 'guest',
   }
 ];

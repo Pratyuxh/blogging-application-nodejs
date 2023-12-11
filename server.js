@@ -10,6 +10,7 @@ import jwtAuth from './src/middlewares/jwt.middleware.js';
 import swagger from 'swagger-ui-express';
 import apiDocs from './swagger.json' assert {type:'json'};
 import { serve } from 'swagger-ui-express';
+import loggerMiddleware from './src/middlewares/logger.middleware.js';
 // 2. Create Server
 const server = express();
 
@@ -33,6 +34,7 @@ server.use(express.json());
 // server.use(bodyParser.json());
 // for all requests related to product, redirect to product routes.
 // localhost:3200/api/products
+server.use(loggerMiddleware);
 server.use("/api-docs",  swagger.serve ,swagger.setup(apiDocs))
 server.use("/api/products", jwtAuth, productRouter);
 server.use("/api/cartItems", jwtAuth, cartRouter)

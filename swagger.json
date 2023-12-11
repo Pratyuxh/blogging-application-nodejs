@@ -7,7 +7,8 @@
     },
     "servers":[
         {
-            "url":"http://localhost:3200"
+            "url":"http://localhost:3200",
+            "description": "Local server"
         }
     ],
     "components":{
@@ -20,23 +21,6 @@
     }
     },
     "paths":{
-        "/api/products": {
-            "get":{
-                "tags": ["Products"],
-                "summary":"Get Products",
-                "description":"User will get all products",
-                "security":[{"JWT": {} }],
-                "responses":{
-                    "200": {
-                        "description":"OK"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                }
-            }
-        },
-
         "/api/users/signin": {
             "post":{
                 "tags": ["Users"],
@@ -66,6 +50,158 @@
                     },
                     "400": {
                         "description": "Incorrect Credentials"
+                    }
+                }
+            }
+        },
+
+        "/api/users/signup": {
+            "post":{
+                "tags": ["Users"],
+                "summary":"SignUp",
+                "description":"User signup",
+                "requestBody":{
+                    "content":
+                    {
+                        "application/json":{
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name":{
+                                        "type": "string"
+                                    },
+                                    "email":{
+                                        "type": "string"
+                                    },
+                                    "password":{
+                                        "type": "string"
+                                    },
+                                    "type":{
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        } 
+                    }
+                },
+                "responses":{
+                    "200": {
+                        "description":"OK"
+                    },
+                    "400": {
+                        "description": "Incorrect Credentials"
+                    }
+                }
+            }
+        },
+
+        "/api/products": {
+            "get":{
+                "tags": ["Products"],
+                "summary":"Get Products",
+                "description":"User will get all products",
+                "security":[{"JWT": {} }],
+                "responses":{
+                    "200": {
+                        "description":"OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post":{
+                "tags": ["Products"],
+                "summary":"Create Products",
+                "description":"Create Products",
+                "security":[{"JWT": {} }],
+                "requestBody":{
+                    "content":
+                    {
+                        "application/json":{
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name":{
+                                        "type": "string"
+                                    },
+                                    "desc":{
+                                        "type": "string"
+                                    },
+                                    "price":{
+                                        "type": "string"
+                                    },
+                                    "imageURL":{
+                                        "type": "string"
+                                    },
+                                    "category":{
+                                        "type": "string"
+                                    },
+                                    "sizes":{
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        } 
+                    }
+                },
+                "responses":{
+                    "200": {
+                        "description":"OK"
+                    },
+                    "400": {
+                        "description": "Incorrect Data"
+                    }
+                }
+            }
+        },
+
+        "/api/cartItems":{
+            "get":{
+                "tags": ["CartItems"],
+                "summary":"Get CartItems",
+                "description":"User will get all cartItems",
+                "security":[{"JWT": {} }],
+                "responses":{
+                    "200": {
+                        "description":"OK"
+                    },
+                    "401": {
+                        "description": "No Items"
+                    }
+                }
+            },
+            "post":{
+                "tags": ["CartItems"],
+                "summary":"Create CartItems",
+                "description":"Create CartItems",
+                "requestBody":{
+                    "content":
+                    {
+                        "application/json":{
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "productID":{
+                                        "type": "string"
+                                    },
+                                    "userID":{
+                                        "type": "string"
+                                    },
+                                    "quantity":{
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        } 
+                    }
+                },
+                "responses":{
+                    "200": {
+                        "description":"OK"
+                    },
+                    "400": {
+                        "description": "Incorrect Data"
                     }
                 }
             }
