@@ -57,17 +57,28 @@ export default class BlogController {
     .send('Blog is removed');
 }
 
-async updateBlog(req, res) {
-  try{
-  const { title, content, author } = req.body;
-  const newBlog = new BloggingModel(title,content,author
-  );
-  const createdBlog = await this.blogRepository.update(newBlog);
-  res.status(201).send(createdBlog);
-}catch(err){
-  console.log(err);
-  return res.status(200).send("Something went wrong");
-}
-} 
+// async updateBlog(req, res) {
+//   try{
+//   const { title, content, author } = req.body;
+//   const newBlog = new BloggingModel(title,content,author
+//   );
+//   const createdBlog = await this.blogRepository.update(newBlog);
+//   res.status(201).send(createdBlog);
+// }catch(err){
+//   console.log(err);
+//   return res.status(200).send("Something went wrong");
+// }
+// } 
+
+updateBlog = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { content, newcontent } = req.body;
+    await this.blogRepository.updateBlog(id, content, newcontent);
+    res.status(200).send("Blog updated successfully.");
+  } catch (error) {
+    res.status(500).send("Error updating blog.");
+  }
+};
 
 }
