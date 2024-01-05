@@ -1,5 +1,3 @@
-// Manage routes/paths to ProductController
-
 // 1. Import express.
 import express from 'express';
 import UserController from './user.controller.js';
@@ -11,7 +9,11 @@ const userController = new UserController();
 
 // All the paths to controller methods.
 
-userRouter.post('/signup', userController.signUp);
-userRouter.post('/signin', userController.signIn);
+userRouter.post('/register', (req, res)=>{
+    userController.register(req, res)
+});
+userRouter.post('/login', (req, res)=>{
+    userController.login(req, res)
+});
 
 export default userRouter;

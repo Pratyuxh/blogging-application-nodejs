@@ -1,37 +1,59 @@
 import UserModel from './user.model.js';
 import jwt from 'jsonwebtoken'
+import UserRepository from './user.repository.js';
+import bcrypt from 'bcrypt';
 
 export default class UserController {
-  signUp(req, res) {
+
+  constructor(){
+    this.userRepository = new UserRepository();
+  }
+
+  async register(req, res) {
     const {
       name,
       email,
       password,
       type,
     } = req.body;
-    const user = UserModel.signUp(
+
+    const hashedPassword = await bcrypt.hash(password, 12)
+
+    const user = new UserModel(
       name,
       email,
-      password,
+      hashedPassword,
       type
     );
+    await this.userRepository.register(user);
     res.status(201).send(user);
   }
 
-  signIn(req, res) {
-    const result = UserModel.signIn(
-      req.body.email,
-      req.body.password
-    );
-    if (!result) {
+  async login(req, res, next) {
+    try {
+
+    const user = await this.userRepository.findByEmail(req.body.email);
+    if(!user){
       return res
         .status(400)
         .send('Incorrect Credentials');
-    } else {
-        const token = jwt.sign({userID: result.id, email: result.email}, "xRHiqWtq0c", {
-            expiresIn:'1h',
-        });
-      return res.status(200).send(token);
+    }else{
+      //compare password with hashed password
+      const result = await bcrypt.compare(req.body.password, user.password);
+      if(result){
+        const token = jwt.sign({id: result.id, email: result.email}, process.env.JWT_SECRET, {
+          expiresIn:'1h',
+      });
+    return res.status(200).send(token);
+      }else{
+        return res
+       .status(400)
+       .send('Incorrect Credentials');
+      }
     }
+ }catch(err){
+    console.log(err);
+    return res.status(200).send("Something went wrong");
+  }
   }
 }

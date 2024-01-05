@@ -1,22 +1,32 @@
 import fs from "fs";
-import { loadavg } from "os";
+import winston from "winston";
 
 const fsPromise = fs.promises;
 
-async function log(logData){
-    try{
-        logData = `\n ${new Date().toString()} - ${logData}`;
-        await fsPromise.writeFile('log.txt',logData);
-    }catch(err){
-        console.log(err);
-    }
-}
+// async function log(logData){
+//     try{
+//         logData = `\n ${new Date().toString()} - ${logData}`;
+//         await fsPromise.writeFile('log.txt',logData);
+//     }catch(err){
+//         console.log(err);
+//     }
+// }
+
+const logger = winston.createLogger({
+    level:'info',
+    format:winston.format.json(),
+    defaultMeta: {service: 'request-logging'},
+    transports:[
+        new winston.transports.File({filename:'error.log'})
+    ]
+});
 
 const loggerMiddleware = async (req, res, next) =>{
     //1. Log Request Body.
-    if(!req.url.includes('signin')){
+    if(req.url.includes('signin')){
     const logData=`${req.url} - ${JSON.stringify(req.body)}`;
-    await log(logData);}
+    logger.info(logData)
+    }
     next();
 };
 

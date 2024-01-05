@@ -2,8 +2,8 @@
     "openapi":"3.0.0",
     "info":{
         "version":"1.0.0",
-        "description":"API for E-Commerce application",
-        "title":"E-commerce API"
+        "description":"API for Blogging application",
+        "title":"Blogging API"
     },
     "servers":[
         {
@@ -21,7 +21,7 @@
     }
     },
     "paths":{
-        "/api/users/signin": {
+        "/api/login": {
             "post":{
                 "tags": ["Users"],
                 "summary":"Login",
@@ -55,11 +55,11 @@
             }
         },
 
-        "/api/users/signup": {
+        "/api/register": {
             "post":{
                 "tags": ["Users"],
-                "summary":"SignUp",
-                "description":"User signup",
+                "summary":"Register",
+                "description":"User Register",
                 "requestBody":{
                     "content":
                     {
@@ -95,11 +95,11 @@
             }
         },
 
-        "/api/products": {
+        "/api/blogs": {
             "get":{
-                "tags": ["Products"],
-                "summary":"Get Products",
-                "description":"User will get all products",
+                "tags": ["Blogs"],
+                "summary":"Get Blogs",
+                "description":"User will get all blogs",
                 "security":[{"JWT": {} }],
                 "responses":{
                     "200": {
@@ -111,9 +111,9 @@
                 }
             },
             "post":{
-                "tags": ["Products"],
-                "summary":"Create Products",
-                "description":"Create Products",
+                "tags": ["Blogs"],
+                "summary":"Create Blogs",
+                "description":"Create Blogs",
                 "security":[{"JWT": {} }],
                 "requestBody":{
                     "content":
@@ -122,22 +122,13 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "name":{
+                                    "title":{
                                         "type": "string"
                                     },
-                                    "desc":{
+                                    "content":{
                                         "type": "string"
                                     },
-                                    "price":{
-                                        "type": "string"
-                                    },
-                                    "imageURL":{
-                                        "type": "string"
-                                    },
-                                    "category":{
-                                        "type": "string"
-                                    },
-                                    "sizes":{
+                                    "author":{
                                         "type": "string"
                                     }
                                 }
@@ -156,25 +147,42 @@
             }
         },
 
-        "/api/cartItems":{
+        "/api/blogs/{id}": {
             "get":{
-                "tags": ["CartItems"],
-                "summary":"Get CartItems",
-                "description":"User will get all cartItems",
+                "tags": ["Blogs"],
+                "summary":"Get One Blog",
+                "description":"User will get one blog",
                 "security":[{"JWT": {} }],
+                "parameters": [
+                    {
+                      "in": "path",
+                      "name": "id",
+                      "required": true,
+                      "description": "Get one Blog"
+                    }
+                  ],
                 "responses":{
                     "200": {
                         "description":"OK"
                     },
                     "401": {
-                        "description": "No Items"
+                        "description": "Unauthorized"
                     }
                 }
             },
-            "post":{
-                "tags": ["CartItems"],
-                "summary":"Create CartItems",
-                "description":"Create CartItems",
+            "put":{
+                "tags": ["Blogs"],
+                "summary":"Update Blogs",
+                "description":"Update Blogs",
+                "security":[{"JWT": {} }],
+                "parameters": [
+                    {
+                      "in": "path",
+                      "name": "id",
+                      "required": true,
+                      "description": "Update Blog"
+                    }
+                  ],
                 "requestBody":{
                     "content":
                     {
@@ -182,13 +190,13 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "productID":{
+                                    "title":{
                                         "type": "string"
                                     },
-                                    "userID":{
+                                    "content":{
                                         "type": "string"
                                     },
-                                    "quantity":{
+                                    "author":{
                                         "type": "string"
                                     }
                                 }
@@ -196,6 +204,28 @@
                         } 
                     }
                 },
+                "responses":{
+                    "200": {
+                        "description":"OK"
+                    },
+                    "400": {
+                        "description": "Incorrect Data"
+                    }
+                }
+            },
+            "delete":{
+                "tags": ["Blogs"],
+                "summary":"Delete Blogs",
+                "description":"Delete Blogs",
+                "security":[{"JWT": {} }],
+                "parameters": [
+                    {
+                      "in": "path",
+                      "name": "id",
+                      "required": true,
+                      "description": "Delete Blog"
+                    }
+                  ],
                 "responses":{
                     "200": {
                         "description":"OK"
